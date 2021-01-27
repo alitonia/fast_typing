@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import {Input} from './component/Input'
+import {useDataSource} from './component/useDataSource'
+import {Slider} from './component/slider'
+import {Score} from './component/score'
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+    const {
+        data,
+        handlePress,
+        inputValue,
+        currentErrors,
+        total,
+        historyTrack,
+        levelCount: totalLevel,
+        handleChangeLevel,
+        currentLevel
+    } = useDataSource()
+    return (
+        <div className="App">
+            <h1 style={{color: 'green'}}>{currentLevel}</h1>
+
+            <Score currentErrors={currentErrors}
+                   currentTotal={total}
+            />
+            <Slider data={data} historyTrack={historyTrack}/>
+
+            <Input handlePress={handlePress}
+                   inputValue={inputValue}
+            />
+            <div style={{height: '30px'}}/>
+
+            {[...Array(totalLevel).keys()].map(x=>{
+                return(
+                    <button onClick={()=>handleChangeLevel(x)}>{`Level ${x}`}</button>
+                )
+            })}
+        </div>
+    );
+};
 
 export default App;
